@@ -3,10 +3,11 @@
 #include<cstdio>
 #include<cmath>
 #include<cstdlib>
+#include <iomanip>
  typedef long double ld;
 using namespace std;
  
-const ld eps = 1e-10;
+const ld eps = 1e-8;
 const ld PI = acos(-1.0);
  
 int dcmp(ld x){
@@ -23,7 +24,7 @@ struct Point{
 		x = a;y = b;
 	}
 	inline void input(){
-		cin >> x >> y;
+		scanf("%Lf%Lf",&x,&y);
 	}
 	inline Point operator-(const Point &b)const{
 		return Point(x - b.x,y - b.y);
@@ -85,7 +86,7 @@ ld LineCrossCircle(const Point &a,const Point &b,const Point &r,
 	return rtos;
 }
  
-ld SectorArea(const Point &r,const Point &a,const Point &b,ld R){ //不大于180度扇形面积，r->a->b逆时针 
+ld SectorArea(const Point &r,const Point &a,const Point &b,ld R){ //不大�?80度扇形面积，r->a->b逆时�?
 	ld A2 = Sqr(r - a) , B2 = Sqr(r - b) , C2 = Sqr(a - b);
 	return R * R * acos( (A2 + B2 - C2) * 0.5 / sqrt(A2) / sqrt(B2)) * 0.5;
 }
@@ -129,15 +130,15 @@ int main(){
 		p[i].input();
 		sum=sum+p[i];
 	}
-	sum=sum/(ld)n;
+	sum=sum/n;
 	ld tot=0;
 	for (i=0;i<n-1;i++) {
-		tot+=fabs(sum.cross(p[i+1],p[i]));
+		tot+=sum.cross(p[i],p[i+1]);
 	}
-	tot+=fabs(sum.cross(p[n-1],p[0]));
-	tot/=2.0L;
+	tot+=sum.cross(p[n-1],p[0]);
+    tot=fabs(tot/2.0L);
 	int m;
-	cin >> m;
+	scanf("%d",&m);
 	while (m--) {
 		Point circle;
 		circle.input(); 
@@ -145,13 +146,14 @@ int main(){
 		cin >> P >> Q;
 		ld R;
 		ld l,r,mid;
-		l=0.0L;r=1500000.0L;
-		while (r-l>eps) {
+		l=0;r=1500000;
+		while (fabs(l-r)>eps) {
 			mid=R=(l+r)/2.0L;
 			ld size=SPICA(n,circle,R);
 			if (size*Q>(Q-P)*tot) r=mid; else l=mid;
 		}
-		printf("%.12Lf\n",(r-1)/2.0L);
+		cout << setiosflags(ios::fixed) << setprecision(12);
+        cout << (l+r)/2.0L << endl;
 	}
 	return 0;
 }
