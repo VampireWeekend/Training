@@ -19,20 +19,18 @@ using namespace std;
 typedef long long ll;
 typedef long double ld;
 typedef double db;
-typedef pair<int,int> pp;
-const int maxn=2005,inf=0x3f3f3f3f;
+const int maxn=10000005,inf=0x3f3f3f3f;
 const ll llinf=0x3f3f3f3f3f3f3f3f;
 const ld pi=acos(-1.0L);
+ll a[maxn];
 
 int main() {
-	ll sum,tot,x,y;
-	sum=tot=0;
-	cin >> x >> y;
-	while (y!=0) {
-		tot+=y;
-		sum+=x;
-		cin >> x >> y;
+	ll sum=2;a[1]=a[2]=1;
+	for (int i=3;i<=10000000;i++) {
+		a[i]=a[i-a[i-1]]+a[i-1-a[i-2]];
+	//	cout << a[i] << endl;
+		sum+=a[i];sum%=(1000000007);
 	}
-	cout << (db)sum/(db)tot;
+	cout << a[10000000] << ' ' << sum%(1000000007);
 	return 0;
 }
