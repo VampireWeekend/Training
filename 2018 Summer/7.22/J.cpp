@@ -25,29 +25,29 @@ const ll llinf=0x3f3f3f3f3f3f3f3f,mod=1e9+7;
 const ld pi=acos(-1.0L);
 ll ans[maxn],lv[maxn][21],rv[maxn][21];
 pp q[maxn];
-vector<int> v[maxn];
+vector<int> v;
 int a[maxn];
 ll n,m;
 
 void divide(int l,int r,vector<int> v) {
 	int mid=(l+r)/2;
-	for (int i=mid+1;i<=r;i++)
+	for (int i=mid;i<=r;i++)
 		for (int j=m-1;j>=0;j--)
 			rv[i][j]=0;
+	rv[mid][0]=1;
 	for (int i=mid+1;i<=r;i++) {
-		rv[i][a[i]]=1;
 		for (int j=m-1;j>=0;j--) {
 			rv[i][j]+=rv[i-1][j]+rv[i-1][(j-a[i]+m)%m]; 
 			rv[i][j]%=mod;
 		}
 	}
-	for (int i=mid;i>=l;i--)
+	for (int i=mid+1;i>=l;i--)
 		for (int j=m-1;j>=0;j--)
 			lv[i][j]=0;
+	lv[mid+1][0]=1;
 	for (int i=mid;i>=l;i--) {
-		lv[i][a[i]]=1;
 		for (int j=m-1;j>=0;j--) {
-			lv[i][j]+=lv[i-1][j]+lv[i-1][(j-a[i]+m)%m];
+			lv[i][j]+=lv[i+1][j]+lv[i+1][(j-a[i]+m)%m];
 			lv[i][j]%=mod;
 		}
 	}
@@ -74,13 +74,13 @@ int main() {
 		scanf("%d",&a[i]);
 		a[i]%=m;
 	}
-	int q;
+	int qn;
 	scanf("%d",&qn);
 	int x,y;
 	for (int i=1;i<=qn;i++) {
 		scanf("%d%d",&q[i].first,&q[i].second);
 		if (q[i].first!=q[i].second) v.pb(i); else 
-			if (a[i]==0) ans[i]=1;
+			if (a[q[i].first]==0) ans[i]=2; else ans[i]=1;
 	}
 	divide(1,n,v);
 	for (int i=1;i<=qn;i++) {
